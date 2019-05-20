@@ -11,7 +11,7 @@ import java.util.Arrays;
  * @CSDN https://blog.csdn.net/wfcn_zyq
  * @describe
  */
-public class ArrayStack implements Stack {
+public class ArrayStack<T> implements Stack<T> {
     Object[] elementArray;
     int maxSize;
     int currentSize;
@@ -32,35 +32,50 @@ public class ArrayStack implements Stack {
     public boolean push(Object v) {
         if (currentSize == maxSize) {
             int oldSize = maxSize;
-            int newSize = oldSize << 2;
+            int newSize = oldSize << 1;
             if (newSize + 8 - Integer.MAX_VALUE > 0) {
                 return false;
             }
             maxSize = newSize;
             elementArray = Arrays.copyOf(elementArray,newSize);
         }
-        currentSize++;
+
         elementArray[currentSize++] = v;
         return true;
     }
 
     @Override
-    public Object pop() {
-        return null;
+    public T pop() {
+        if (currentSize == 0) {
+            return null;
+        }
+        return (T)elementArray[--currentSize];
     }
 
     @Override
-    public Object peek() {
-        return null;
+    public T peek() {
+        if (currentSize == 0) {
+            return null;
+        }
+        return (T)elementArray[currentSize - 1];
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return currentSize == 0;
     }
 
     @Override
     public int size() {
-        return 0;
+        return currentSize;
+    }
+
+    @Override
+    public String toString() {
+        return "ArrayStack{" +
+                "elementArray=" + Arrays.toString(elementArray) +
+                ", maxSize=" + maxSize +
+                ", currentSize=" + currentSize +
+                '}';
     }
 }
